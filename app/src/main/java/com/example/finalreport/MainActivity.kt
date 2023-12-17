@@ -10,11 +10,15 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
+import java.text.DecimalFormat
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() , LocationListener {
-    private lateinit var tv: TextView
-    private lateinit var tv1: TextView
-    private lateinit var title: TextView
+    private lateinit var tv: TextView  //尋找GPS與網路設定
+    private lateinit var tv1: TextView //與電影院距離
+    private lateinit var title: TextView //標題
     //建立List，屬性為Poi物件
     private val Pois = ArrayList<Poi>()
     //LocationManager設定
@@ -90,7 +94,49 @@ class MainActivity : AppCompatActivity() , LocationListener {
         Pois.addAll(pois)
     }
     override fun onLocationChanged(location: Location) {
-        TODO("Not yet implemented")
+        val logStringBuilder = StringBuilder()
+        val coordinatesLog = "目前座標-經度:${location.longitude} ,緯度:${location.latitude}"
+        logStringBuilder.append(coordinatesLog).append("\n")
+        for (p1: Poi in Pois) {
+            p1.distance = distance(location.latitude, location.longitude, p1.latitude, p1.longitude)
+        }
+        DistanceSort(Pois)
+        for (i in 0 until Pois.size) {
+            val poiInfo = "名稱:${Pois[i].name} ,距離為:${DistanceText(Pois[i].distance)}\n"
+            logStringBuilder.append(poiInfo)
+        }
+        runOnUiThread {
+            tv1.text = logStringBuilder.toString()
+        }
+    }
+    private fun DistanceText(distance: Double): String {//將距離轉換為文字描述
+        //如果距離小於 1000 ，就以「m」為單位，否則以「km」為單位。
+        return if (distance < 1000) distance.toInt().toString() + "m" else DecimalFormat("#.00").format(
+            distance / 1000
+        ) + "km"
+    }
+    private fun DistanceSort(poi: ArrayList<Poi>) {//列表按照 distance 屬性進行升序排序
+        poi.sortBy { it.distance }
+    }
+    //distanc計算兩組經緯度座標之間的球面距離
+    fun distance(longitude1: Double, latitude1: Double, longitude2: Double, latitude2: Double): Double {
+        //經緯度轉換成弧度
+        val radLatitude1 = latitude1 * Math.PI / 180
+        val radLatitude2 = latitude2 * Math.PI / 180
+        //計算兩點的差異
+        val l = radLatitude1 - radLatitude2
+        val p = longitude1 * Math.PI / 180 - longitude2 * Math.PI / 180
+        //使用 Haversine 公式計算球面距離
+        var distance = 2 * Math.asin(
+            Math.sqrt(
+                Math.pow(Math.sin(l / 2), 2.0)
+                        + (Math.cos(radLatitude1) * Math.cos(radLatitude2)
+                        * Math.pow(Math.sin(p / 2), 2.0))
+            )
+        )
+        distance = distance * 6378137.0//將弧長轉換為實際距離乘以地球的半徑
+        distance = (Math.round(distance * 10000) / 10000).toDouble()//四捨五入
+        return distance
     }
     //生命週期開始
     override fun onResume() {
@@ -101,6 +147,7 @@ class MainActivity : AppCompatActivity() , LocationListener {
         super.onPause()
         locationManager.removeUpdates(this)
     }
+    //應用程式請求使用者權限並獲得使用者對權限請求的回應時被調用
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
