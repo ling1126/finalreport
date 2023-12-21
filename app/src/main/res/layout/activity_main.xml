@@ -10,35 +10,38 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="192dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:text="title"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="116dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="12"
+        android:scrollbars="vertical"
         android:text="尋找GPS與網路設定"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scrollbars="vertical"
-        android:maxLines="12"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="248dp"
-        android:layout_marginEnd="272dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="20dp"
         android:text="與電影院距離"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

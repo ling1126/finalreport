@@ -95,14 +95,14 @@ class MainActivity : AppCompatActivity() , LocationListener {
     }
     override fun onLocationChanged(location: Location) {
         val logStringBuilder = StringBuilder()
-        val coordinatesLog = "目前座標-經度:${location.longitude} ,緯度:${location.latitude}"
+        val coordinatesLog = "目前座標\n經度:${location.longitude}\n緯度:${location.latitude}\n以下為與電影院的距離"
         logStringBuilder.append(coordinatesLog).append("\n")
         for (p1: Poi in Pois) {
             p1.distance = distance(location.latitude, location.longitude, p1.latitude, p1.longitude)
         }
         DistanceSort(Pois)
         for (i in 0 until Pois.size) {
-            val poiInfo = "名稱:${Pois[i].name} ,距離為:${DistanceText(Pois[i].distance)}\n"
+            val poiInfo = "名稱:${Pois[i].name} \n距離為:${DistanceText(Pois[i].distance)}\n"
             logStringBuilder.append(poiInfo)
         }
         runOnUiThread {
