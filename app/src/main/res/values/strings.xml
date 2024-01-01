@@ -3,4 +3,6 @@
     <string name="movie">電影查詢系統</string>
     <string name="theater">新北電影院</string>
     <string name="now">現正熱映</string>
+    <string name="movie2">新北電影院</string>
+    <string name="btnUpdate">現在位置</string>
 </resources>
