@@ -16,8 +16,8 @@ import org.json.JSONObject
 
 class theater : AppCompatActivity() {
     private lateinit var myBind:ActivityTheaterBinding
-    private val targetUrl =
-        "https://tcgbusfs.blob.core.windows.net/dotapp/news.json"
+    private val targetUrl = "https://data.ntpc.gov.tw/api/datasets/61C99F42-8A90-4ADC-9C40-BA9E0EA097AA/json?page=0&size=1000"
+    //private val targetUrl = "https://boxoffice.tfi.org.tw/api/export?start=2023/12/18&end=2023/12/24"
     private var getString = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +42,12 @@ class theater : AppCompatActivity() {
                         getString = string()   //已取得 JSON
                         Log.d("myTag", "$getString")
                         try { //分析 JSON
-                            var news = JSONObject(getString).getJSONArray("News")
+                            var news = JSONObject(getString).getJSONArray("name")
 //                          for (i in 0..news.length())
                             var jO = news.getJSONObject(1)
-                            var  jmessage = jO.getString("chmessage")
+                            var  jmessage = jO.getString("address")
 //                          var jmessage = jO.getString("url")
-                            var jstart = jO.getString("starttime")
+                            var jstart = jO.getString("tel")
                             getString = "start time :$jstart\n" +
                                     "Message : $jmessage"
                         } catch (e: Exception) {
