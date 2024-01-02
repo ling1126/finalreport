@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 
@@ -36,29 +38,35 @@ class theater : AppCompatActivity() {
                 // runBlocking
                 val getData = runBlocking {
                     var response = client.newCall(request).execute() //downloading
-
                     //request.body.run {  //data
                     response.body.run {
                         getString = string()   //已取得 JSON
                         Log.d("myTag", "$getString")
-                        try { //分析 JSON
-                            var news = JSONObject(getString).getJSONArray("name")
-//                          for (i in 0..news.length())
-                            var jO = news.getJSONObject(1)
-                            var  jmessage = jO.getString("address")
-//                          var jmessage = jO.getString("url")
-                            var jstart = jO.getString("tel")
-                            getString = "start time :$jstart\n" +
-                                    "Message : $jmessage"
-                        } catch (e: Exception) {
-                            Log.d("myTag", "Error : ${e.toString()}")
+                        try {
+                            val jsonData = JSONArray(getString)
+                            if (jsonData.length() > 1) {
+                                val jO = jsonData.getJSONObject(1)
+                                val jname = jO.getString("name")
+                                val jaddress = jO.getString("address")
+                                val jphone = jO.getString("tel")
+                                getString = "電影院 : $jname\n" +
+                                        "Telephone :$jphone\n" +
+                                        "address : $jaddress"
+                            } else {
+                                Log.d("myTag", "Error: JSON array ")
+                            }
+                        } catch (e: JSONException) {
+                            Log.d("myTag", "Error: ${e.toString()}")
                         }
+
                     }
                 }
                 runOnUiThread {
                     myBind.textView.text = getString
                 }
+                //save to file. 資料存檔
             }
         }
+
     }
 }
