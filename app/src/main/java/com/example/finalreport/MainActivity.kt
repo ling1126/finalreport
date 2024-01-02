@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private val pois = mutableListOf<Poi>()
     //LocationManager設定
     private lateinit var locationManager: LocationManager
+
     private var hasGPS = false
     private var hasNetwork = false
 
@@ -32,11 +33,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
         myBind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 
+        //theater
         myBind.btnTheater.setOnClickListener {
             Intent(this, theater::class.java).apply {
             startActivity(this)
             }
         }
+        //now
         myBind.btnNow.setOnClickListener {
             Intent(this, pageIntent::class.java).apply {
                 startActivity(this)
