@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
         }
         myBind.btnNow.setOnClickListener {
-            Intent(this, pageIntent::class.java).apply {
+            Intent(this, chart2::class.java).apply {
                 startActivity(this)
             }
         }

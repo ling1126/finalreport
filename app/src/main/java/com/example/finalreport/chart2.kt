@@ -20,16 +20,13 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class pageIntent: AppCompatActivity() {
 
-
+class chart2 : AppCompatActivity() {
     private lateinit var barChart: BarChart
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_page_intent)
-
-        barChart = findViewById(R.id.chart)
+        setContentView(R.layout.activity_chart2)
+        barChart = findViewById(R.id.chart22)
 
         fetchDataAndCreateBarChart()
     }
@@ -100,4 +97,3 @@ class pageIntent: AppCompatActivity() {
         barChart.invalidate()
     }
 }
-
