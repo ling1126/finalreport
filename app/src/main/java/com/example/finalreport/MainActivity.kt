@@ -32,9 +32,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
         myBind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 
-        myBind.button.setOnClickListener {
+        myBind.btnTheater.setOnClickListener {
             Intent(this, theater::class.java).apply {
             startActivity(this)
+            }
+        }
+        myBind.btnNow.setOnClickListener {
+            Intent(this, pageIntent::class.java).apply {
+                startActivity(this)
             }
         }
 
@@ -90,7 +95,22 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private fun list() {
         pois.add(Poi("威秀影城股份有限公司板橋分公司", 25.014105657798165, 121.46715243252677))
-        // 加入其他電影院資訊...
+        pois.add(Poi("威秀影城股份有限公司板橋分公司", 25.014105657798165, 121.46715243252677))
+        pois.add(Poi("板橋秀泰影城股份有限公司", 25.013209935465266, 121.46208878783273))
+        pois.add(Poi("林園電影城戲院", 25.00933780351172, 121.45465836507512))
+        pois.add(Poi("鴻金寶麻吉戲院(萬念福開發事業股份有限公司)", 25.023086143226138, 121.42480572488105))
+        pois.add(Poi("威秀影城股份有限公司中和環球分公司", 25.007177645471415, 121.47542257229885))
+        pois.add(Poi("土城秀泰影城股份有限公司", 25.062455091672728, 121.49721209610084))
+        pois.add(Poi("天台戲院股份有限公司", 25.007138753227718, 121.47499341851896))
+        pois.add(Poi("國賓影城股份有限公司林口分公司", 25.074213827153127, 121.3684236505742))
+        pois.add(Poi("威秀影城股份有限公司新北林口分公司", 25.077934743829545, 121.3811752938347))
+        pois.add(Poi("樹林秀泰影城股份有限公司", 24.997416671879666, 121.42864334179383))
+        pois.add(Poi("美麗新娛樂股份有限公司淡海分公司", 25.199727004217948, 121.43854731151075))
+        pois.add(Poi("喜樂時代影城股份有限公司永和分公司", 25.008830914327948, 121.50777787280424))
+        pois.add(Poi("國賓影城股份有限公司淡水分公司", 25.177177195438922, 121.42960578823048))
+        pois.add(Poi("美麗新娛樂股份有限公司新莊分公司", 25.061471484342867, 121.45374736576008))
+//        Pois.clear()
+//        Pois.addAll(pois)
     }
 
     override fun onLocationChanged(location: Location) {

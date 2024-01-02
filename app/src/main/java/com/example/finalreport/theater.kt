@@ -43,6 +43,7 @@ class theater : AppCompatActivity() {
                         getString = string()   //已取得 JSON
                         Log.d("myTag", "$getString")
                         try {
+
                             val jsonData = JSONArray(getString)
                             if (jsonData.length() > 1) {
                                 val jO = jsonData.getJSONObject(1)
@@ -55,6 +56,7 @@ class theater : AppCompatActivity() {
                             } else {
                                 Log.d("myTag", "Error: JSON array ")
                             }
+
                         } catch (e: JSONException) {
                             Log.d("myTag", "Error: ${e.toString()}")
                         }
@@ -64,7 +66,7 @@ class theater : AppCompatActivity() {
                 runOnUiThread {
                     myBind.textView.text = getString
                 }
-                //save to file. 資料存檔
+
             }
         }
 
