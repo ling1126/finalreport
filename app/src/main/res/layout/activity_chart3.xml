@@ -5,10 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".chart2">
+    tools:context=".chart3">
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
     <TextView
-        android:id="@+id/tv2"
+        android:id="@+id/tv3"
         android:layout_width="match_parent"
         android:layout_height="37dp"
         android:text="電影總票數排行"
@@ -18,28 +29,11 @@
         android:textStyle="bold" />
 
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:progressTint="#FF5722"
-        android:visibility="invisible"
-        tools:visibility="visible" />
-
-
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart22"
+        android:id="@+id/chart33"
         android:layout_width="match_parent"
-        android:layout_height="579dp">
+        android:layout_height="638dp">
 
     </com.github.mikephil.charting.charts.BarChart>
-
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="168dp"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 
 </LinearLayout>

@@ -1,11 +1,14 @@
 package com.example.finalreport
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
@@ -27,11 +30,21 @@ import org.json.JSONObject
 class chart2 : AppCompatActivity() {
     private lateinit var barChart: BarChart
     private lateinit var progressBar: ProgressBar
+    private lateinit var btn:Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart2)
         barChart = findViewById(R.id.chart22)
         progressBar = findViewById(R.id.progressBar1)
+        btn = findViewById(R.id.btn2)
+
+        btn.setOnClickListener {
+            Intent(this, chart3::class.java).apply {
+                startActivity(this)
+            }
+        }
+
 
         fetchDataAndCreateBarChart()
     }
@@ -42,6 +55,8 @@ class chart2 : AppCompatActivity() {
         barChart.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
         val url = "https://boxoffice.tfi.org.tw/api/export?start=2023/12/18&end=2023/12/24"
+
+
 
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -108,8 +123,8 @@ class chart2 : AppCompatActivity() {
 
     private fun setupBarChart(entries: List<BarEntry>, xAxisLabels: List<String>, barData: BarData) {
 
-        barChart.invalidate()
-        barChart.setNoDataText("AAA");
+
+
         barChart.data = barData
         barChart.setFitBars(true)
         barChart.animateY(1500)
@@ -131,6 +146,8 @@ class chart2 : AppCompatActivity() {
 
         barChart.setVisibleXRangeMaximum(3f)
         barChart.isDragEnabled = true
+
+        barChart.invalidate()
 
 
 
