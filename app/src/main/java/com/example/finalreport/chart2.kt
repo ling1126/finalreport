@@ -56,9 +56,6 @@ class chart2 : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         val url = "https://boxoffice.tfi.org.tw/api/export?start=2023/12/18&end=2023/12/24"
 
-
-
-
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val client = OkHttpClient()
@@ -72,7 +69,7 @@ class chart2 : AppCompatActivity() {
 
                 val listArray = jsonData.getJSONArray("list")
 
-                // Create a list of pairs with entry value and its index
+
                 val entryList = mutableListOf<Pair<Float, Int>>()
 
                 for (i in 0 until listArray.length()) {
@@ -84,10 +81,10 @@ class chart2 : AppCompatActivity() {
                     xAxisLabels.add(jname)
                 }
 
-                // Sort the entries based on their values
+
                 entryList.sortByDescending { it.first }
 
-                // Reconstruct entries and xAxisLabels based on sorted order
+
                 entryList.forEachIndexed { index, pair ->
                     entries.add(BarEntry(index.toFloat(), pair.first))
                     xAxisLabels.add(listArray.getJSONObject(pair.second).getString("name"))
