@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
         //now
         myBind.btnNow.setOnClickListener {
-            Intent(this, pageIntent::class.java).apply {
+            Intent(this, nowSpace::class.java).apply {
                 startActivity(this)
             }
         }
@@ -61,14 +61,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
         hasGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
+        //檢查是否提供定位
         var s = ""
         if (hasGPS) s += "設備提供GPS，"
         if (hasNetwork) s += "設備提供網路定位\n"
         tv.text = s
 
         //登記location/GPS
+
         if (hasGPS || hasNetwork) {
             //檢查權限是否開啟locationManager
+            //取得使用者同意
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -77,8 +80,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
+                //取得使用者同意
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             } else {
+                //更新本人位置
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1.0F, this)
             }
         } else {
@@ -120,7 +125,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val logStringBuilder = StringBuilder()
         val coordinatesLog = "目前座標\n經度:${location.longitude}\n緯度:${location.latitude}\n以下為與電影院的距離"
         logStringBuilder.append(coordinatesLog).append("\n")
-
+        //取得經度緯度
         for (p1: Poi in pois) {
             p1.distance = distance(location.latitude, location.longitude, p1.latitude, p1.longitude)
         }

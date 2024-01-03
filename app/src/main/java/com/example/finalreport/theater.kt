@@ -31,7 +31,7 @@ class theater : AppCompatActivity() {
         myBind = ActivityTheaterBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 //        setContentView(R.layout.activity_theater)
-         myBind.textView.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
+        myBind.textView.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
 
         myBind.btnUpdate.setOnClickListener {
             fetchDataAndDisplayResult()
