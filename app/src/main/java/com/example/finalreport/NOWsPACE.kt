@@ -3,19 +3,33 @@ package com.example.finalreport
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.example.finalreport.databinding.ActivityNowsPaceBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONException
+import java.io.IOException
 import java.text.DecimalFormat
 
 class NOWsPACE : AppCompatActivity() , LocationListener {
     private lateinit var myBind:ActivityNowsPaceBinding
+
+    private val targetUrl = "https://data.ntpc.gov.tw/api/datasets/61C99F42-8A90-4ADC-9C40-BA9E0EA097AA/json?page=0&size=1000"
+    private var getString = ""
+    private var getString2 = ""
+    private var getString3 = ""
+
 
     //建立List，屬性為Poi物件
     private val pois = mutableListOf<NOWsPACE.Poi>()
@@ -100,6 +114,58 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
     }
 
 
+
+
+    private fun fetchDataAndDisplayResult() {
+        //設定 OKhttp (開始 Download 資料
+        val client = OkHttpClient.Builder().build()
+        val request = Request.Builder().url(targetUrl).build()
+
+        //work Thread (Coroutines) , 資料分析
+        GlobalScope.launch {
+            // runBlocking
+            try {
+                val response = client.newCall(request).execute()
+                response.body?.use {
+                    getString = it.string()   // 已取得 JSON
+                    Log.d("myTag", "$getString")
+
+                    val jsonData = JSONArray(getString)
+                    val resultStringBuilder = StringBuilder()
+
+                    for (i in 0 until jsonData.length()) {
+                        val jO = jsonData.getJSONObject(i)
+                        val jname = jO.getString("name")
+                        val jaddress = jO.getString("address")
+                        val jphone = jO.getString("tel")
+
+
+                        val theaterInfo = "電影院名稱 : $jname\n" +
+                                "地址 : $jaddress\n" +
+                                "電話 :$jphone\n" +
+                                "經緯度: \n "
+
+                        getString2= "電影院名稱 : $jname\n"
+
+
+
+                        resultStringBuilder.append(theaterInfo)
+                        //
+                        withContext(Dispatchers.Main) {
+                            //myBind.textView.text = resultStringBuilder.toString()
+                            Log.w("myTag", "$theaterInfo ")
+                        }
+                    }
+                }
+            } catch (e: IOException) {
+                Log.w("myTag", "Error: ${e.toString()}")
+            } catch (e: JSONException) {
+                Log.w("myTag", "Error: ${e.toString()}")
+            }
+
+        }
+    }
+
     override fun onLocationChanged(location: Location) {
         val logStringBuilder = StringBuilder()
         //val coordinatesLog = "目前座標\n經度:${location.longitude}\n緯度:${location.latitude}\n以下為與電影院的距離"
@@ -116,6 +182,7 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
         for (i in pois.indices) {
             val poiInfo = "名稱:${pois[i].name} \n距離為:${DistanceText(pois[i].distance)}\n"
             logStringBuilder.append(poiInfo)
+            Log.e("myTag", "放棄...")
         }
 
         runOnUiThread {
@@ -169,7 +236,5 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // 處理權限回調
     }
-
-
-
 }
+
