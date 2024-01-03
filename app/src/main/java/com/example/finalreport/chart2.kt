@@ -1,8 +1,11 @@
 package com.example.finalreport
 
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
@@ -23,16 +26,23 @@ import org.json.JSONObject
 
 class chart2 : AppCompatActivity() {
     private lateinit var barChart: BarChart
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart2)
         barChart = findViewById(R.id.chart22)
+        progressBar = findViewById(R.id.progressBar1)
 
         fetchDataAndCreateBarChart()
     }
 
+
+
     private fun fetchDataAndCreateBarChart() {
+        barChart.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
         val url = "https://boxoffice.tfi.org.tw/api/export?start=2023/12/18&end=2023/12/24"
+
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -47,13 +57,25 @@ class chart2 : AppCompatActivity() {
 
                 val listArray = jsonData.getJSONArray("list")
 
+                // Create a list of pairs with entry value and its index
+                val entryList = mutableListOf<Pair<Float, Int>>()
+
                 for (i in 0 until listArray.length()) {
                     val jO = listArray.getJSONObject(i)
                     val jname = jO.getString("name")
-                    val jtotalTickets = jO.getInt("totalTickets").toFloat() // Assuming totalTickets is an integer
+                    val jtotalTickets = jO.getInt("totalTickets").toFloat()
 
-                    entries.add(BarEntry(i.toFloat(), jtotalTickets))
+                    entryList.add(Pair(jtotalTickets, i))
                     xAxisLabels.add(jname)
+                }
+
+                // Sort the entries based on their values
+                entryList.sortByDescending { it.first }
+
+                // Reconstruct entries and xAxisLabels based on sorted order
+                entryList.forEachIndexed { index, pair ->
+                    entries.add(BarEntry(index.toFloat(), pair.first))
+                    xAxisLabels.add(listArray.getJSONObject(pair.second).getString("name"))
                 }
 
                 val barDataSet = BarDataSet(entries, "電影熱度")
@@ -64,7 +86,11 @@ class chart2 : AppCompatActivity() {
                 val barData = BarData(barDataSet)
 
                 runOnUiThread {
-                    setupBarChart(barData, xAxisLabels)
+                    barChart.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+
+                    setupBarChart(entries, xAxisLabels, barData)
+
                 }
 
             } catch (e: JSONException) {
@@ -77,7 +103,13 @@ class chart2 : AppCompatActivity() {
         }
     }
 
-    private fun setupBarChart(barData: BarData, xAxisLabels: List<String>) {
+
+
+
+    private fun setupBarChart(entries: List<BarEntry>, xAxisLabels: List<String>, barData: BarData) {
+
+        barChart.invalidate()
+        barChart.setNoDataText("AAA");
         barChart.data = barData
         barChart.setFitBars(true)
         barChart.animateY(1500)
@@ -89,11 +121,19 @@ class chart2 : AppCompatActivity() {
         xAxis.setDrawAxisLine(true)
         xAxis.granularity = 1f
         xAxis.textSize = 12f
-        xAxis.labelRotationAngle = -45f // 旋转角度
+        xAxis.labelRotationAngle = -45f
+
+        //barChart.setNoDataText("loading")
+        //barChart.setNoDataTextColor(Color.BLACK) // 設置文字顏色（可選）
+
+
 
 
         barChart.setVisibleXRangeMaximum(3f)
         barChart.isDragEnabled = true
-        barChart.invalidate()
+
+
+
+
     }
 }
