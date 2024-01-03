@@ -11,7 +11,7 @@
         android:id="@+id/tv2"
         android:layout_width="match_parent"
         android:layout_height="37dp"
-        android:text="電影總票數排行"
+        android:text="全世界電影總票數排行"
         android:textAlignment="center"
         android:textColor="#E91E63"
         android:textSize="24sp"
@@ -38,8 +38,10 @@
 
     <Button
         android:id="@+id/btn2"
-        android:layout_width="168dp"
+        android:layout_width="258dp"
         android:layout_height="wrap_content"
-        android:text="Button" />
+
+        android:text="國家查詢>>票房排名"
+        android:backgroundTint="@color/my_button_color"/>
 
 </LinearLayout>

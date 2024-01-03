@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
@@ -36,7 +37,7 @@ import java.net.URL
 class chart3 : AppCompatActivity() {
     private lateinit var chart: BarChart
     private lateinit var spinner: Spinner // 假設有一個 Spinner 用來選擇國家
-    private lateinit var getString: String
+    private lateinit var progressBar: ProgressBar
     private lateinit var button: Button
 
     private lateinit var allData: ArrayList<oneItem>
@@ -61,14 +62,19 @@ class chart3 : AppCompatActivity() {
         chart = findViewById(R.id.chart33)
         spinner = findViewById(R.id.spinner2)
         button = findViewById(R.id.btn3)
+        progressBar = findViewById(R.id.progressBar2)
         allData = ArrayList<oneItem>() //建立起使值
         val countyList = ArrayList<String>()
 
         val uniqueCounties = HashSet<String>()
 
+        chart.visibility = View.INVISIBLE
+        progressBar.visibility = View.INVISIBLE
+
 
 
         button.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
             val url = "https://boxoffice.tfi.org.tw/api/export?start=2023/12/18&end=2023/12/24"
             var client = OkHttpClient.Builder().build()
             val request = Request.Builder().url(url).build()
@@ -104,6 +110,8 @@ class chart3 : AppCompatActivity() {
                         }
 
                         runOnUiThread {
+                            chart.visibility = View.VISIBLE
+                            progressBar.visibility = View.GONE
                             val spAdapter = ArrayAdapter(
                                 this@chart3,
                                 android.R.layout.simple_spinner_dropdown_item,
@@ -158,6 +166,7 @@ class chart3 : AppCompatActivity() {
 
         val barDataSet = BarDataSet(entries, "Tickets")
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS.toList())
+        barDataSet.valueTextSize = 20f
 
         val data = BarData(barDataSet)
         chart.data = data
@@ -172,9 +181,12 @@ class chart3 : AppCompatActivity() {
         chart.setVisibleXRangeMaximum(3f)
         chart.isDragEnabled = true
 
+        val barData = BarData(barDataSet)
+        barData.barWidth = 0.5f // 設定柱狀的寬度，值在 0.0 到 1.0 之間，1.0 表示填滿整個區域
+        chart.data = barData
+
         chart.invalidate()
     }
-
 
     }
 
