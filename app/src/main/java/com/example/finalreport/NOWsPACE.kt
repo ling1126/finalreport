@@ -17,10 +17,6 @@ import java.text.DecimalFormat
 class NOWsPACE : AppCompatActivity() , LocationListener {
     private lateinit var myBind:ActivityNowsPaceBinding
 
-    //private lateinit var tv: TextView  //尋找GPS與網路設定
-    //private lateinit var tv1: TextView //與電影院距離
-    //private lateinit var title: TextView //標題
-
     //建立List，屬性為Poi物件
     private val pois = mutableListOf<NOWsPACE.Poi>()
     //LocationManager設定
@@ -35,15 +31,9 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
         myBind = ActivityNowsPaceBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 
-        //定義
-       // tv = myBind.tv
-       // tv1 = myBind.tv1
-        //title = myBind.title
-        //myBind.tv1.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
-
-        //建立物件，並放入List裡 (建立物件需帶入名稱、緯度、經度)
+        // 滾動文字
         myBind.tv1.movementMethod = ScrollingMovementMethod.getInstance()
-
+        //建立物件，並放入List裡 (建立物件需帶入名稱、緯度、經度)
         list()
 
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -91,30 +81,31 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
     }
 
     private fun list() {
-        pois.add(Poi("威秀影城股份有限公司板橋分公司", 25.014105657798165, 121.46715243252677))
-        pois.add(Poi("威秀影城股份有限公司板橋分公司", 25.014105657798165, 121.46715243252677))
-        pois.add(Poi("板橋秀泰影城股份有限公司", 25.013209935465266, 121.46208878783273))
-        pois.add(Poi("林園電影城戲院", 25.00933780351172, 121.45465836507512))
+        pois.add(Poi("天台戲院股份有限公司", 25.007138753227718, 121.47499341851896))
         pois.add(Poi("鴻金寶麻吉戲院(萬念福開發事業股份有限公司)", 25.023086143226138, 121.42480572488105))
         pois.add(Poi("威秀影城股份有限公司中和環球分公司", 25.007177645471415, 121.47542257229885))
-        pois.add(Poi("土城秀泰影城股份有限公司", 25.062455091672728, 121.49721209610084))
-        pois.add(Poi("天台戲院股份有限公司", 25.007138753227718, 121.47499341851896))
+        pois.add(Poi("威秀影城股份有限公司板橋分公司", 25.014105657798165, 121.46715243252677))
+        pois.add(Poi("板橋秀泰影城股份有限公司", 25.013209935465266, 121.46208878783273))
         pois.add(Poi("國賓影城股份有限公司林口分公司", 25.074213827153127, 121.3684236505742))
-        pois.add(Poi("威秀影城股份有限公司新北林口分公司", 25.077934743829545, 121.3811752938347))
+        pois.add(Poi("國賓影城股份有限公司新莊分公司", 25.063719900000002, 121.45849229999999))
+        pois.add(Poi("威秀影城股份有限公司新北林口分公司", 25.0713425, 121.36533089999999))
         pois.add(Poi("樹林秀泰影城股份有限公司", 24.997416671879666, 121.42864334179383))
+        pois.add(Poi("土城秀泰影城股份有限公司", 25.062455091672728, 121.49721209610084))
         pois.add(Poi("美麗新娛樂股份有限公司淡海分公司", 25.199727004217948, 121.43854731151075))
         pois.add(Poi("喜樂時代影城股份有限公司永和分公司", 25.008830914327948, 121.50777787280424))
         pois.add(Poi("國賓影城股份有限公司淡水分公司", 25.177177195438922, 121.42960578823048))
         pois.add(Poi("美麗新娛樂股份有限公司新莊分公司", 25.061471484342867, 121.45374736576008))
-
+        pois.add(Poi("林園電影城戲院(暫時歇業中)", 25.0087121, 121.45447980000002 ))
+        pois.add(Poi("華麗電影院(暫時歇業中)", 25.0087121, 121.45447980000002))
     }
 
 
     override fun onLocationChanged(location: Location) {
         val logStringBuilder = StringBuilder()
-        val coordinatesLog = "目前座標\n經度:${location.longitude}\n緯度:${location.latitude}\n以下為與電影院的距離"
+        //val coordinatesLog = "目前座標\n經度:${location.longitude}\n緯度:${location.latitude}\n以下為與電影院的距離"
+        myBind.textView3.text = "目前座標 : \n經度:${location.longitude}\n緯度:${location.latitude}"
         Log.e("myTag", "輸出")
-        logStringBuilder.append(coordinatesLog).append("\n")
+        //logStringBuilder.append(coordinatesLog).append("\n")
 
         for (p1: Poi in pois) {
             p1.distance = distance(location.latitude, location.longitude, p1.latitude, p1.longitude)
@@ -178,6 +169,7 @@ class NOWsPACE : AppCompatActivity() , LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // 處理權限回調
     }
+
 
 
 }

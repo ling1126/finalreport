@@ -1,6 +1,7 @@
 package com.example.finalreport
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -33,8 +34,12 @@ class theater : AppCompatActivity() {
 //        setContentView(R.layout.activity_theater)
          myBind.textView.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
 
+        fetchDataAndDisplayResult()
+
         myBind.btnUpdate.setOnClickListener {
-            fetchDataAndDisplayResult()
+            Intent(this, NOWsPACE::class.java).apply {
+                startActivity(this)
+            }
         }
     }
     private fun fetchDataAndDisplayResult() {
@@ -69,7 +74,7 @@ class theater : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 Log.d("myTag", "Address: $address, Latitude: $latitude, Longitude: $longitude")
 
-                                getString2 = "Latitude: $latitude \n, Longitude: $longitude"
+                                getString2 = "Latitude: $latitude \n Longitude: $longitude \n"
                             }
                         } else {
                             withContext(Dispatchers.Main) {
@@ -77,10 +82,10 @@ class theater : AppCompatActivity() {
                             }
                         }
 
-                        val theaterInfo = "电影院 : $jname\n" +
-                                "Telephone :$jphone\n" +
-                                "address : $jaddress\n" +
-                                "經緯度:\n $getString2"
+                        val theaterInfo = "電影院名稱 : $jname\n" +
+                                "地址 : $jaddress\n" +
+                                "電話 :$jphone\n" +
+                                "經緯度: \n $getString2"
 
                         resultStringBuilder.append(theaterInfo)
                         //

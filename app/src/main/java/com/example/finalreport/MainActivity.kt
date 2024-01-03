@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
         //now
         myBind.btnNow.setOnClickListener {
-            Intent(this, NOWsPACE::class.java).apply {
+            Intent(this,pageIntent ::class.java).apply {
                 startActivity(this)
             }
         }

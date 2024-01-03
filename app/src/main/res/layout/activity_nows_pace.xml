@@ -6,26 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".NOWsPACE">
 
+    <TextView
+        android:id="@+id/tvSecTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/movie2"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:maxLines="12"-->
-<!--        android:scrollbars="vertical"-->
-<!--        android:text="尋找GPS與網路設定"-->
-<!--        android:textSize="20sp"-->
-<!--        tools:layout_editor_absoluteX="20dp" />-->
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/btnUpdate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSecTitle" />
+
 
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:text="與電影院距離"
+        android:layout_marginTop="20dp"
+        android:text="@string/km"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdate" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/ll"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/btnUpdate"
+        app:layout_constraintTop_toBottomOf="@+id/tvSecTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
