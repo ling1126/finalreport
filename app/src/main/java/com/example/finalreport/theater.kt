@@ -19,6 +19,13 @@ import kotlinx.coroutines.withContext
 import android.location.Address
 import android.location.Geocoder
 import android.text.method.ScrollingMovementMethod
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ProgressBar
+import android.widget.Spinner
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.io.IOException
 
 class theater : AppCompatActivity() {
@@ -26,22 +33,95 @@ class theater : AppCompatActivity() {
     private val targetUrl = "https://data.ntpc.gov.tw/api/datasets/61C99F42-8A90-4ADC-9C40-BA9E0EA097AA/json?page=0&size=1000"
     private var getString = ""
     private var getString2 = ""
+    private lateinit var allData: ArrayList<oneItem105>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         myBind = ActivityTheaterBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 //        setContentView(R.layout.activity_theater)
-        myBind.textView.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
+        //myBind.textView.movementMethod = ScrollingMovementMethod.getInstance() // 滾動文字
 
-        fetchDataAndDisplayResult()
+        //fetchDataAndDisplayResult()
+        myBind.RecyclerView.layoutManager = LinearLayoutManager(this)
+
+        allData = ArrayList<oneItem105>()
 
         myBind.btnUpdate.setOnClickListener {
             Intent(this, NOWsPACE::class.java).apply {
                 startActivity(this)
             }
         }
+
+        fetchDataAndDisplayResult()
+
+
     }
+
+    private fun fetchDataAndDisplayResult() {
+        val client = OkHttpClient.Builder().build()
+        val request = Request.Builder().url(targetUrl).build()
+
+        GlobalScope.launch {
+            try {
+                val response = client.newCall(request).execute()
+                response.body?.use {
+                    getString = it.string()
+
+                    val allRecord = JSONArray(getString)
+                    val newData = ArrayList<oneItem105>()
+                    val resultStringBuilder = StringBuilder()
+
+                    for (i in 0 until allRecord.length()) {
+                        val jO = allRecord.getJSONObject(i)
+                        val jname = jO.getString("name")
+                        val jaddress = jO.getString("address")
+                        val jphone = jO.getString("tel")
+                        newData.add(oneItem105(jname, jaddress, jphone))
+
+
+                    // 地址轉經緯
+                        val address = jaddress
+                        val latLng = getAddressLatLng(this@theater, address)
+
+                        if (latLng != null) {
+                            val (latitude, longitude) = latLng
+                            withContext(Dispatchers.Main) {
+                                Log.d("myTag", "Address: $address, Latitude: $latitude, Longitude: $longitude")
+
+                                getString2 = "Latitude: $latitude \n Longitude: $longitude \n"
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Log.d("myTag", "Unable to convert address to LatLng.")
+                            }
+                        }
+                    val theaterInfo = "電影院名稱 : $jname\n" +
+                                "地址 : $jaddress\n" +
+                                "電話 :$jphone\n" +
+                                "經緯度: \n $getString2"
+
+                        resultStringBuilder.append(theaterInfo)
+
+                    withContext(Dispatchers.Main) {
+                        allData.clear()
+                        allData.addAll(newData)
+                        val myAdapter = recyclerViewAdapter(allData)
+                        myBind.RecyclerView.adapter = myAdapter
+                        Log.d("myTag", "$theaterInfo ")
+                    }
+                    }
+                }
+            } catch (e: IOException) {
+                Log.e("myTag", "Error: ${e.toString()}")
+            } catch (e: JSONException) {
+                Log.e("myTag", "Error: ${e.toString()}")
+            }
+        }
+
+
+    }
+    /*
     private fun fetchDataAndDisplayResult() {
         //設定 OKhttp (開始 Download 資料
         val client = OkHttpClient.Builder().build()
@@ -101,7 +181,7 @@ class theater : AppCompatActivity() {
                 Log.e("myTag", "Error: ${e.toString()}")
             }
         }
-    }
+    }*/
 
     private fun getAddressLatLng(context: Context, addressString: String): Pair<Double, Double>? {
         val geocoder = Geocoder(context)

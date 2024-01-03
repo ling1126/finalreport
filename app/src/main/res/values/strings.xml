@@ -8,4 +8,17 @@
     <string name="allmovie">電影院資訊</string>
     <string name="km">與電影院距離</string>
     <string name="ll">經度緯度</string>
+
+    <string-array name="region">
+        <item>請選擇</item>
+        <item>三重區</item>
+        <item>新莊區</item>
+        <item>中和區</item>
+        <item>板橋區</item>
+        <item>林口區</item>
+        <item>樹林區</item>
+        <item>土城區</item>
+        <item>淡水區</item>
+        <item>永和區</item>
+    </string-array>
 </resources>

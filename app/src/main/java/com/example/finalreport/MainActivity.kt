@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         myBind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(myBind.root)
 
+
         //theater
         myBind.btnTheater.setOnClickListener {
             Intent(this, theater::class.java).apply {
