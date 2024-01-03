@@ -5,4 +5,7 @@
     <string name="now">現正熱映</string>
     <string name="movie2">新北電影院</string>
     <string name="btnUpdate">現在位置</string>
+    <string name="allmovie">電影院資訊</string>
+    <string name="km">與電影院距離</string>
+    <string name="ll">經度緯度</string>
 </resources>
