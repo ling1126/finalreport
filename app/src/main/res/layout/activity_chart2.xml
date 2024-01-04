@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".chart2">
 
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+
+        android:backgroundTint="@color/my_button_color"
+        android:text="國家查詢>>票房排名" />
+
     <TextView
         android:id="@+id/tv2"
         android:layout_width="match_parent"
@@ -35,13 +43,5 @@
         android:layout_height="579dp">
 
     </com.github.mikephil.charting.charts.BarChart>
-
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="258dp"
-        android:layout_height="wrap_content"
-
-        android:text="國家查詢>>票房排名"
-        android:backgroundTint="@color/my_button_color"/>
 
 </LinearLayout>
